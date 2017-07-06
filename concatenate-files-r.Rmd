@@ -1,0 +1,311 @@
+---
+title: "Concatenate Files"
+author: "Andy Choens"
+date: 2017-07-04
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+# Init
+
+Our first Technique Tuesday has two complimentary goals:
+
+1. Write some code to import and combine an arbitrary number of CSV
+   into a single table/data set.
+2. Introduce some basic and high-level programming concepts which make
+   this possible.
+   
+In other words - yes - we will import bunch of files. But I hope this
+gets you to thinking about the programming skills used and how they
+could be relevant in other contexts.
+
+The code below introduces four different ways to import the data files
+and concatenate them together. The four styles shown are:
+
+1. Copy/Paste
+2. Iterative
+3. Recursion
+4. Functionals
+
+The order of ideas and techniques shown here is
+intentional. Copy/Paste is the least efficient way to complete this
+task, but is conceptually simple. Functionals are far more efficient
+and require but a fraction of the code, but are conceptually
+complex. In all cases, the resulting data frame is the same. But your
+time is valuable, so learning a high-level construct to accomplish
+this task is useful.
+
+Before we import any data, we have to create a vector of the CSV files
+containing the data. We will use this vector in (nearly) all of the
+code examples below.
+
+In the code segment below, the function `dir` returns a vector of the
+CSV files in the `data/` folder. The function `dir` accepts inputs in
+the form of parameters, which alter what it does. For example, the
+parameter `pattern` tells `dir` what type of file to look for. We can
+use this same command to look for CSV files (`pattern="csv"`) or we
+can use it to look for Excel files (`pattern="xlsx"`). \
+
+# List of CSV Files
+
+```{r init}
+
+## Libraries used below ------------------------------------
+library(pander)  ## Makes pretty markdown tables.
+library(readr)   ## Replaces read.csv with read_csv (faster).
+
+## Vector of CSV files from data/ ----------------------------
+csv_files <- dir("data/", pattern="csv", full.names = TRUE)
+
+## See the files -------------------------------------------
+## Prints the file names into this report for clarity.
+## You don't normally do this.
+csv_files
+
+```
+
+As you can see, we have 20 files. But we could have 200, or 2,000. The
+actual number of files is irrelevant. Each of the examples below is
+perfectly capable of importing an arbitrary number of CSV files.
+Importing 2,000,000 files would takemore time, but would not require
+ANY changes to the code below.
+
+# Code Style Examples
+
+We will put the CSV data into a data frame called `foo_data`. This is
+just a random name because I like foo. Normally, I recommend using
+meaningful names, but there is precious little in this data that is
+meaningful, and my object names reflect that.
+
+After each code block introducing a specific method to import the
+data, I have a simple code-block which will count the number of rows
+in `foo_data` and show the first six rows to show that it works and
+generates results which are consistent with the other examples here.
+
+## 1. Copy/Paste
+
+I am happy to report that I received ZERO entries written this way,
+since it fails to achieve any level of abstraction. And, although it
+is possible to do this with 20 files, it would be ridiculous to
+implement this approach with 200 files and only a mad-man would try to
+apply this approach to 2,000 files or more. That said, it is
+straightforward and if you are unfamiliar with importing CSV files
+into R, this code is very straightfoward and will introduce a few
+commands we will use later.
+
+```{r copy-paste}
+
+## Imports into file-specific data frames ------------------
+foo_data_01 <- read_csv("data/file_01.csv")
+foo_data_02 <- read_csv("data/file_02.csv")
+foo_data_03 <- read_csv("data/file_03.csv")
+foo_data_04 <- read_csv("data/file_04.csv")
+foo_data_05 <- read_csv("data/file_05.csv")
+foo_data_06 <- read_csv("data/file_06.csv")
+foo_data_07 <- read_csv("data/file_07.csv")
+foo_data_08 <- read_csv("data/file_08.csv")
+foo_data_09 <- read_csv("data/file_09.csv")
+foo_data_10 <- read_csv("data/file_10.csv")
+foo_data_11 <- read_csv("data/file_11.csv")
+foo_data_12 <- read_csv("data/file_12.csv")
+foo_data_13 <- read_csv("data/file_13.csv")
+foo_data_14 <- read_csv("data/file_14.csv")
+foo_data_15 <- read_csv("data/file_15.csv")
+foo_data_16 <- read_csv("data/file_16.csv")
+foo_data_17 <- read_csv("data/file_17.csv")
+foo_data_18 <- read_csv("data/file_18.csv")
+foo_data_19 <- read_csv("data/file_19.csv")
+foo_data_20 <- read_csv("data/file_20.csv")
+
+## Combines file-specific data frames into one -------------
+if (exists("foo_data")) rm(foo_data)
+foo_data <- rbind(foo_data_01, foo_data_02, foo_data_03,
+                  foo_data_04, foo_data_05, foo_data_06,
+                  foo_data_07, foo_data_08, foo_data_09,
+                  foo_data_10, foo_data_11, foo_data_12,
+                  foo_data_13, foo_data_14, foo_data_15,
+                  foo_data_16, foo_data_17, foo_data_18,
+                  foo_data_19, foo_data_20)
+    
+```
+
+This is entirely manual. The file names, and import command are
+hard-wired. This technique is fine for a small number of flies, but
+becomes unwieldly as the number of files increases. 
+
+So, does Copy/Paste work? The following code will tell us what we have
+done.
+
+```{r}
+
+print(paste("Imported", nrow(foo_data), "rows of data.", sep=" "))
+head(foo_data)
+
+```
+
+** Note:** It is possible to combine the `read_csv` and `rbind`
+commands in a single composed command. That said, I believe separating
+out the stwo steps is helpful to understand how this works and why it is
+inefficient.
+
+
+## 2. Iterative
+
+Programming in loop-de-loops! This solution uses a `for` loop to
+iterate over the `csv_files` vector. For SAS users, this is similar to
+a `macro` inside a `do` loop.
+
+```{r iterative, echo=TRUE, messages=FALSE}
+
+
+
+## Deletes any existing foo_dat objects --------------------
+## It is good practice to delete first
+## when running code in an interactive REPL/session.
+if (exists("foo_data")) rm(foo_data)
+
+# Creates an empty data frame ------------------------------
+foo_data <- data.frame()
+
+## Imports the CSV data ------------------------------------
+## This will return a lot of feedback from R, telling you the column
+## specifications (format) chosen by R for each file.
+## The defaults are fine. 
+for(i in seq_along(csv_files)) {
+            foo_data <- rbind(foo_data, read_csv(csv_files[i]))
+}
+
+```
+
+This code interates over the `csv_files` vector. For each entry in
+`csv_files`, the for loop will run one additional time. Each time, it
+binds the rows of `foo_data` to the newly imported data for that
+loop. The first loop combines the data from the first file to an
+empty data frame.
+
+In fact, the like `foo_data <- data.frame()` is very important. This
+creates an empty data frame, which makes the code in the `for` loop
+muc simplerer. If you don't create the data frame prior to the `for`
+loop, your code must be more complex. This is a conundrum most people
+confronted when solving this problem.
+
+So, does recursion work? The data below is from the `for` loop
+demonstrated above.
+
+```{r}
+
+print(paste("Imported", nrow(foo_data), "rows of data.", sep=" "))
+head(foo_data)
+
+```
+
+Yes! It works. We have imported 2,000 rows of data.
+
+## 3. Recursion
+
+Recursion programming is more than just a hot topic on the Internet
+(although it is that too, see functional programming). Recursion is a
+programming technique where a function (like a SAS macro but more
+powerful) calls itself. Importing an arbitrary number of files is an
+easy excuse to row with recursion.
+
+The user-defined function `concatenate` accepts two parameters:
+
+1. `csv_files`: The vector of CSV files
+2. `i`: Tells R which tells R which file to import
+
+Most of you will probably think this is an overly complex
+solution. And, it probably is. This works because the function calls
+itself (recursion) until it reaches the end of files_csv. Sit down and
+walk through this until it makes sense. If it doesn't, I can back up
+and write a tutorial on user-defined functions in R.
+
+```{r recursion}
+
+## Our function! This function assumes you start at the number 1.
+## If you don't start at #1, you won't be eble to sse / understand the
+## imported data.
+concatenate <- function(csv_files, i) {
+    ## Creates a temporary place to put the imported data.
+    temp <- read_csv(csv_files[i])
+
+    if (i < length(csv_files)) {
+        ## If i < the number of CSV files
+        foo_data <- rbind(concatenate(csv_files, i+1), temp)
+        return(foo_data)
+    } else {
+        ## This would only happen for the last file in csv_files.
+        return(temp)
+    }  
+}
+
+## Uses the function -----------------------------------------
+## This function iterates of each file in each son drenched beauty.
+foo_data <- concatenate(csv_files, 1)
+
+```
+
+This is a good technique to master. Although this example is a little
+arbitrary, there are situations where the complexity introduced by
+this approach _are_ well worth the complexity.
+
+
+## 4. Functionals
+
+This is possible the most abstract practical way to do this. It is
+also the best and easiest to type. But first, let's introduce some new
+concepts. Most programming languages have functions, or something
+similar like a SAS macro. But not all programming languages treat
+functions as a first-class citizen. R does, and this is important.
+
+A functional is a function which accepts a function as an input
+parameter.
+
+Some of you are probably about to stop reading. So hold on.
+
+It isn't really _that_ hard of an idea. Way back at the top, we used
+the function `dir` to find all of the CSV files in the `data/`
+folder. To do that, we had to pass `dir` instructions in the form of
+parameters. A function is nothing more than some code which accepts
+input in a structured manner.
+
+A functional is one step higher in terms of abstraction. A functional
+is a function which accepts a function as a parameter. An example
+might help. The functional `lapply` will apply an arbitrary function
+to every member in a vector. We already have a vector called
+`csv_files`. And we already have a function we want to use,
+`read_csv`. Our other examples used iterative programming techniques
+such as `for` and recursion techniques to apply read_csv to each file
+in `csv_files`. The functional lapply just makes this same idea easier
+to read/write.
+
+```{r functional}
+
+## This could be done in one step.
+## I wrote it this way to encourage you to look at how it works more carefully.
+foo_data <- lapply(X=csv_files, FUN=read_csv)
+foo_data <- data.frame(foo_data)
+
+```
+
+This reduces our work to two steps. In practice, I would write this as
+a single step `foo_data <- data.frame(lapply(X=csv_files,
+FUN=read_csv))`.
+
+The functional `lapply` returns a list. That list has 20 elements in
+it, because csv_files has 20 entries. Each element in the list is a
+data frame composed of the data from a single file. The function
+`data.frame` converts the list to a data frame.
+
+The end result is a single data frame, with all of the data from our
+20 files.
+
+Take a look at this code and think about it. This is a high-level idea
+and is something even some experienced programmers struggle with. But,
+it is an incredibly powerful concept.
+
+**Note:** I know of no way to replicate this in SAS. AFAIK, SAS does
+not treat functions as first-class citizens and therefore does not
+support this kind of programming technique.
