@@ -58,8 +58,8 @@ The Code
                       foo_data_16, foo_data_17, foo_data_18,
                       foo_data_19, foo_data_20)
 
-As you can see, this apprach is manual. This technique works well for a
-small number of flies, but becomes unwieldly as the number of files
+As you can see, this approach is entirely manual. This technique works well
+for a mall number of flies, but becomes unwieldly as the number of files
 increases.
 
 The Results
