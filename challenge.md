@@ -67,7 +67,7 @@ parlance).
 ## Extra Credit #1: 
 
 There are several numeric columns of data. These columns were made by
-sampling a sequence of nuimbers. But I made an error in one file and
+sampling a sequence of numbers. But I made an error in one file and
 there is a column of data with a different average in that file than
 in any other file. Can you figure out which file I made the error in?
 
