@@ -3,11 +3,8 @@
 The first Technique Tuesday has two complimentary goals:
 
 1. Write some code to import and combine an arbitrary number of CSV
-   into a single table/data set.
+   into a single table/data set. And then look at the resulting data.
 2. Introduce some programming concepts which make this possible.
-3. Introduce two Extra Credit Challenges.
-    - Find the numeric column which is different in one file.
-    - Tell us something about the data using descriptive statistics.
 
 The bulk of the challenge, is seemingly ~~boring~~ trivial. Importing
 an arbitrary number of files is not exciting. But it is an opportunity
@@ -30,23 +27,17 @@ The remainder of the discussion is broken down into two parts.
 Today, I introduce four different programming methods to import the
 data files and concatenate them together. The four methods shown are:
 
-1. Copy/Paste *(Fortunately, nobody really tried this.)*
-2. Iterative *(Every single R submission solved the challenge this way.)*
-3. Recursion *(Not a single submission attempted this.)*
-4. Functionals *(This approach may cause extreme euphoria.)*
-
-The order of ideas and techniques shown here is
-intentional. Copy/Paste is the least efficient way to complete this
-task, but is conceptually *simple*. Functionals are far more efficient
-and require but a fraction of the code, but are conceptually
-complex. In all cases, the resulting data frame is identical. But your
-time is valuable, so learning a high-level construct to accomplish
-this task is useful.
+1. Copy/Paste *(**WOW:** Nobody attempted it this way.)*
+2. Iterative *(**WOW:** Every single R submission solved the challenge this way.)*
+3. Recursion *(**NOTE:** Not a single submission attempted this.)*
+4. Functionals *(**WARNING:** This approach may cause extreme euphoria.)*
 
 Our task is to import 20 files. But we could import 200, or 2,000. The
 actual number of files is irrelevant. Each example solution can import
 an arbitrary number of files.  Importing 2,000,000 files would take
 more time, but would not require ANY changes to the code.
+
+Before we go any further, we should discuss efficiency. Each of these examples will complete the task in roughly the same amount of time. In this contect, efficiency is about PROGRAMMER efficiency, not program efficiency. If we are more productive/efficient, we can spend more time working on the interesting things and less time thinking about data import/management.
 
 ### Method Examples
 
@@ -73,3 +64,6 @@ the corresponding name in the repo [here](./).
 
 # 2. Extra Credit
 
+The extra credit part didn't work out as well as I had hoped. I made a rather silly mistake when I created the data, so the file-level differences were actually quite subtle. Real, but subtle. The code example below imports the data using a more complex version of the functionals solution, and then solves both extra credit challenges.
+
+[Extra Credit](./extra-credit.md)
