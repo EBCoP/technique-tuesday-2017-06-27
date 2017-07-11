@@ -70,7 +70,7 @@ this approach _are_ well worth the additional time and effort.
 
 ## The Results
 
-```{r results}
+```{r results, results='as is'}
 
 print(paste("We imported", nrow(foo_data), "rows of data.", sep=" "))
 str(foo_data)

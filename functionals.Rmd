@@ -45,7 +45,8 @@ ways of using `read_csv` on every item in `csv_files`. The functional
 ```{r code, message=FALSE}
 
 ## Init ------------------------------------------------------------------------
-library(readr)   ## Replaces read.csv with read_csv (faster).
+library(dplyr)
+library(readr)
 if (exists("foo_data")) rm(foo_data)
 
 ## Vector of CSV files from data/ ----------------------------------------------
@@ -56,7 +57,7 @@ csv_files <- dir("data/", pattern="csv", full.names = TRUE)
 ## Imports the CSV data --------------------------------------------------------
 ## This could be done in one step, but it is easier to play with this way.
 foo_data <- lapply(X=csv_files, FUN=read_csv)
-foo_data <- data.frame(foo_data)
+foo_data <- bind_rows(foo_data)
 
 ```
 
@@ -83,7 +84,7 @@ support this kind of programming technique.
 
 ## The Results
 
-```{r results}
+```{r results, results='as is'}
 
 print(paste("We imported", nrow(foo_data), "rows of data.", sep=" "))
 str(foo_data)
