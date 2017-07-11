@@ -354,7 +354,7 @@ in a box plot.
 
     boxplot(third_col~as.factor(file_name), data=foo_data)
 
-![](extra-credit_files/figure-markdown_strict/ec1-part2-1.png)
+<img src="extra-credit_files/figure-markdown_strict/ec1-part2-1.png" style="display: block; margin: auto;" />
 
 Extra Credit \#2
 ----------------

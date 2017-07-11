@@ -81,7 +81,7 @@ average to be different, and not just the standard deviation, but I
 messed up a little when I created the raw code. Sorry! It is a little
 easier to see in a box plot.
 
-```{r ec1-part2}
+```{r ec1-part2, fig.align="center", fig.width=10}
 
 boxplot(third_col~as.factor(file_name), data=foo_data)
 
