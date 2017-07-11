@@ -39,6 +39,13 @@ This was the content of the original challenge:
 > there is a column of data with a different average in that file than in
 > any other file. Can you figure out which file I made the error in?
 
+Unfortuantely, as we shall see, I made a mistake when I tried to make an
+intentional mistake and did not set up the data the way I meant to. As 
+several of you pointed out to me, the average is basically the same across
+each of the data files.
+
+Oops.
+
     ## I only need to look at integer columns, because I am told the error is in
     ## on of these columns. So, I need to figure out which columns are integers and
     ## now characters.
@@ -196,9 +203,9 @@ This was the content of the original challenge:
 </tbody>
 </table>
 
-As everyone noticed, the average for each column in all 20 files is
-basically the same. So, we won't find the answer there. What about
-standard deviation?
+The average value for each column in all 20 files is basically the
+same. So, we won't find the answer there. What about standard
+deviation?
 
     file_sd <- foo_data %>%
         select(columns_to_select) %>%
@@ -348,7 +355,7 @@ standard deviation?
 </tbody>
 </table>
 
-To be fair, this was tricky. My goal was to make the AVERAGE in file
+To be fair, I messed this up. My goal was to make the AVERAGE in file
 four different from the others. But, I made a dumb mistake in the code I
 used to produce the data, and the only difference is in the standard
 deviation, and even that isn't real big. Sorry! It is a little easier to
@@ -358,6 +365,8 @@ see in a box and whiskers plot.
 
 <img src="extra-credit_files/figure-markdown_strict/ec1-p3-1.png" style="display: block; margin: auto;" />
 
+If you would like to see the code that produced the data, see this [file](./data/files.R).
+
 Extra Credit \#2
 ----------------
 
@@ -366,7 +375,7 @@ columns?
 
     ## OK - I should have called this Extra Credit #1.
     ## This is much easier than the first challenge.
-    ## Sorry.
+    ## And, it works/makes sense!
     summary(foo_data)
 
     ##    first_col        second_col      third_col       fourth_col       
