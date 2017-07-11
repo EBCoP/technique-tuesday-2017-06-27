@@ -1,4 +1,4 @@
-# Insert Challenge description here
+# README
 
 The first Technique Tuesday has two complimentary goals:
 
