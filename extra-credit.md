@@ -32,10 +32,12 @@ At this point, we have a data.frame called `foo_data` with
 Extra Credit \#1
 ----------------
 
-There are several numeric columns of data. These columns were made by
-sampling a sequence of numbers. But I made an error in one file and
-there is a column of data with a different average in that file than in
-any other file. Can you figure out which file I made the error in?
+This was the content of the original challenge:
+
+> There are several numeric columns of data. These columns were made by
+> sampling a sequence of numbers. But I made an error in one file and
+> there is a column of data with a different average in that file than in
+> any other file. Can you figure out which file I made the error in?
 
     ## I only need to look at integer columns, because I am told the error is in
     ## on of these columns. So, I need to figure out which columns are integers and
