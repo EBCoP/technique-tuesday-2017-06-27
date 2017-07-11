@@ -44,7 +44,7 @@ sampling a sequence of numbers. But I made an error in one file and
 there is a column of data with a different average in that file than
 in any other file. Can you figure out which file I made the error in?
 
-```{r ec1}
+```{r ec1, fig.align="center"}
 
 ## I only need to look at integer columns, because I am told the error is in
 ## on of these columns. So, I need to figure out which columns are integers and
@@ -56,8 +56,6 @@ column_integers <- which(column_types == "integer")
 ## This lets us keep only the integer columns and the file_name column.
 columns_to_select <- c(column_integers,which(names(foo_data) == "file_name"))
 
-
-
 file_means <- foo_data %>%
     select(columns_to_select) %>%
     group_by(file_name) %>%
@@ -65,28 +63,35 @@ file_means <- foo_data %>%
 
 pander(data.frame(file_means), caption="These files all have similar means.")
 
+```
+
+As everyone noticed, the average for each column in all 20 files is
+basically the same. So, we won't find the answer there. What about
+standard deviation?
+
+```{r ec1p2, fig.align="center"}
+
 file_sd <- foo_data %>%
     select(columns_to_select) %>%
     group_by(file_name) %>%
     summarize_all(sd)
 
-pander(data.frame(file_sd), caption="But not the same standard deviation.")
+pander(data.frame(file_sd),
+       caption="But they do not the same standard deviation.")
+
+```
+
+To be fair, this was tricky. My goal was to make the AVERAGE in file
+four different from the others. But, I made a dumb mistake in the code
+I used to produce the data, and the only difference is in the standard
+deviation, and even that isn't real big. Sorry! It is a little easier to
+see in a box and whiskers plot.
+
+```{r ec1-p3, fig.align="center", fig.width=10}
 
 boxplot(third_col~as.factor(file_name), data=foo_data)
 
 ```
-
-To be fair, this was really tricky. I had actually intended the
-average to be different, and not just the standard deviation, but I
-messed up a little when I created the raw code. Sorry! It is a little
-easier to see in a box plot.
-
-```{r ec1-part2, fig.align="center", fig.width=10}
-
-boxplot(third_col~as.factor(file_name), data=foo_data)
-
-```
-
 
 ## Extra Credit #2
 

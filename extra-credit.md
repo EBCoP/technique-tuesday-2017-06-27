@@ -47,8 +47,6 @@ any other file. Can you figure out which file I made the error in?
     ## This lets us keep only the integer columns and the file_name column.
     columns_to_select <- c(column_integers,which(names(foo_data) == "file_name"))
 
-
-
     file_means <- foo_data %>%
         select(columns_to_select) %>%
         group_by(file_name) %>%
@@ -196,15 +194,20 @@ any other file. Can you figure out which file I made the error in?
 </tbody>
 </table>
 
+As everyone noticed, the average for each column in all 20 files is
+basically the same. So, we won't find the answer there. What about
+standard deviation?
+
     file_sd <- foo_data %>%
         select(columns_to_select) %>%
         group_by(file_name) %>%
         summarize_all(sd)
 
-    pander(data.frame(file_sd), caption="But not the same standard deviation.")
+    pander(data.frame(file_sd),
+           caption="But they do not the same standard deviation.")
 
 <table style="width:69%;">
-<caption>But not the same standard deviation.</caption>
+<caption>But they do not the same standard deviation.</caption>
 <colgroup>
 <col width="16%" />
 <col width="16%" />
@@ -343,18 +346,15 @@ any other file. Can you figure out which file I made the error in?
 </tbody>
 </table>
 
-    boxplot(third_col~as.factor(file_name), data=foo_data)
-
-![](extra-credit_files/figure-markdown_strict/ec1-1.png)
-
-To be fair, this was really tricky. I had actually intended the average
-to be different, and not just the standard deviation, but I messed up a
-little when I created the raw code. Sorry! It is a little easier to see
-in a box plot.
+To be fair, this was tricky. My goal was to make the AVERAGE in file
+four different from the others. But, I made a dumb mistake in the code I
+used to produce the data, and the only difference is in the standard
+deviation, and even that isn't real big. Sorry! It is a little easier to
+see in a box and whiskers plot.
 
     boxplot(third_col~as.factor(file_name), data=foo_data)
 
-<img src="extra-credit_files/figure-markdown_strict/ec1-part2-1.png" style="display: block; margin: auto;" />
+<img src="extra-credit_files/figure-markdown_strict/ec1-p3-1.png" style="display: block; margin: auto;" />
 
 Extra Credit \#2
 ----------------
