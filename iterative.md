@@ -5,9 +5,9 @@ Introduction
 
 This was *by far* the most popular solution. An iterative approach is a
 form of a loop, which loops over a vector. Examples include `for` loops
-and a `while` loop. Although old-school R programmers will cluck their
-tongues when contronted with iterative solutions, it is a method that is
-familiar to anyone with any extensive programming expensive.
+and `while` loops. Although old-school R programmers will cluck their
+tongues when confronted with iterative solutions, it is a method that is
+familiar to anyone with any programming experience.
 
     ## Init ------------------------------------------------------------------------
     library(readr)   ## Replaces read.csv with read_csv (faster).
@@ -17,7 +17,7 @@ familiar to anyone with any extensive programming expensive.
     csv_files <- dir("data/", pattern="csv", full.names = TRUE)
 
     ## Creates an empty data frame -------------------------------------------------
-    ## It is best practive to delete an abject before trying to aned to it.
+    ## It is best practice to delete an object before trying to apend to it.
     if (exists("foo_data")) rm(foo_data)
     ## The code below instantiates a data.frame called foo_data. You do not have to
     ## define the column types. They will all be NULL and NA, which can be combined,
