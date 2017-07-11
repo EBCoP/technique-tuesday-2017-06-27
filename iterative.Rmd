@@ -1,0 +1,55 @@
+---
+title: "Methodology: Iterative"
+date: 2017-07-10
+output: md_document
+---
+
+[Click here to return to the main README file.](./README.md)
+
+## Introduction
+
+This was _by far_ the most popular solution. An iterative approach is
+a form of a loop, which loops over a vector. Examples include `for`
+loops and a `while` loop. Although old-school R programmers will cluck
+their tongues when contronted with iterative solutions, it is a method
+that is familiar to anyone with any extensive programming expensive.
+
+```{r code, message=FALSE}
+
+## Init ------------------------------------------------------------------------
+library(readr)   ## Replaces read.csv with read_csv (faster).
+
+## Vector of CSV files from data/ ----------------------------------------------
+## NOTE: full.names is your friend! Makes life easier.
+csv_files <- dir("data/", pattern="csv", full.names = TRUE)
+
+## Creates an empty data frame -------------------------------------------------
+## It is best practive to delete an abject before trying to aned to it.
+if (exists("foo_data")) rm(foo_data)
+## The code below instantiates a data.frame called foo_data. You do not have to
+## define the column types. They will all be NULL and NA, which can be combined,
+## logically, with everything.
+foo_data <- data.frame()
+
+## Imports the CSV data --------------------------------------------------------
+## This will return a lot of feedback from R, telling you the column
+## specifications (format) chosen by R for each file.
+## The defaults are fine.
+## Because we already have a null object (foo_data), we can start rbinding
+## immediately.
+for(i in seq_along(csv_files)) {
+            foo_data <- rbind(foo_data, read_csv(csv_files[i]))
+}
+
+```
+
+## The Results
+
+```{r results}
+
+print(paste("We imported", nrow(foo_data), "rows of data.", sep=" "))
+str(foo_data)
+
+```
+
+[Click here to return to the main README file.](./README.md)

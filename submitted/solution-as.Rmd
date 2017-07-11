@@ -1,0 +1,132 @@
+---
+title: "Puzzle 1 concatenating"
+date: "June 27, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+## Andy's challenge
+
+1. read in 20 zip files
+2. concatenate files with tags for respective file numbers
+
+```{r readfiles}
+
+# set up dataframe
+r <- data.frame(first_col = numeric(0), second_col = numeric(0), 
+                third_col = numeric(0), fourth_col = character(0), 
+                fifth_col = character(0), filename = character(0))
+
+# 1. read in 20 zip files
+files <- list.files("../data/", pattern="*.csv") 
+  # where "data" is in the working directory and contains all files
+for (i in 1:length(files)) {
+  f <- read.csv(paste0("../data/", files[i]), header = TRUE)
+
+  # 2. concatenate files with tags for respective file names
+  f$filename <- files[i]
+  r <- rbind(r,f)
+}
+rm(f, i, files)
+
+```
+
+3. identify file with error in column average
+
+```{r finderror}
+
+# 3. identify file with error in column average
+#    still not sure this is right, but at least I'm not just eyeballing it now
+e <- aggregate(r[, 1:3], list(r$filename), mean)
+summary(e)
+a <- aggregate(r[, 1:3], list(r$filename), summary)
+summary(a)
+# file 15 column 3 contains the max value for Q1, Mean, Median, Q3
+# is there a way to automate this rather than eyeballing it?
+
+b <- data.frame(a$third_col)
+rownames(b) <- a$Group.1
+s <- summary(b)
+rownames(s) <- substr(s[, 1], 1, 7)
+
+# function modified from http://stackoverflow.com/questions/7963898/
+#   extracting-the-last-n-characters-from-a-string-in-r
+rightsubstr <- function(var, increment) {
+	substr(var, (nchar(var) + 1) - increment, nchar(var))
+}
+
+# function copied from http://stackoverflow.com/questions/2261079/
+#   how-to-trim-leading-and-trailing-whitespace-in-r
+trim <- function (x) {
+	gsub("^\\s+|\\s+$", "", x)
+}
+
+s <- trim(gsub(":", "", rightsubstr(s, increment = 8)))
+l <- c("min", "q1", "median", "mean", "q3", "max")
+s <- data.frame(s)
+s$Freq <- as.numeric(as.character(s$Freq))
+
+# transpose s
+t <- data.frame(cbind(s$Freq[1:6], s$Freq[7:12], s$Freq[13:18], s$Freq[19:24], s$Freq[25:30], s$Freq[31:36]))
+rownames(t) <- colnames(t) <- l
+
+u <- data.frame(min = 1:6, q1 = NA, median = NA, mean = NA, 
+                q3 = NA, max = NA, row.names = l)
+
+# test for too high or too low
+x <- 1:20
+for (i in 1:6) {
+  for (j in 1:6) {
+    y <- x[b[,i] %in% t[j,i]]
+    if (length(y) > 1) {
+      z <- y[1]
+      for (k in 2:length(y)) {
+        z <- paste(z, y[k], sep = ", ")
+      }
+      u[j,i] <- z
+    } else if (length(y) == 1) {
+      u[j,i] <- y
+    } else {
+      u[j,i] <- NA
+    }
+  }
+}
+u
+# from these results, set 15 is too high (by a lot) and set 8 is too low (by a little)
+
+```
+
+4. describe columns using basic descriptive statistics
+
+```{r summarize}
+
+summary(r)
+# for summary by file, print(a) above
+
+```
+
+
+# TLDR; Full code without comments or Q3
+
+```{r fullcode, include = FALSE}
+
+r <- data.frame(first_col = numeric(0), second_col = numeric(0), 
+                third_col = numeric(0), fourth_col = character(0), 
+                fifth_col = character(0), filename = character(0))
+files <- list.files("../data/", pattern="*.csv") # step 1
+for (i in 1:length(files)) {
+  f <- read.csv(paste0("../data/", files[i]), header = TRUE)
+  f$filename <- files[i]
+  r <- rbind(r,f) # step 2
+}
+rm(f, i, files)
+a <- aggregate(r[, 1:3], list(r$filename), summary) # step 4 by file
+summary(r) # step 4 overall
+
+```
+

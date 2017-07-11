@@ -1,27 +1,27 @@
 ---
 title: "Concatenate Files"
 author: "Andy Choens"
-date: 2017-07-04
+date: 2017-07-10
 output:
-  html_document:
-    toc: true
-    toc_depth: 2
+  md_document:
 ---
 
 # Init
 
-Our first Technique Tuesday has two complimentary goals:
+The first Technique Tuesday has two complimentary goals:
 
 1. Write some code to import and combine an arbitrary number of CSV
    into a single table/data set.
-2. Introduce some basic and high-level programming concepts which make
-   this possible.
+2. Introduce some programming concepts which make this possible.
    
 In other words - yes - we will import bunch of files. But I hope this
 gets you to thinking about the programming skills used and how they
 could be relevant in other contexts.
 
-The code below introduces four different ways to import the data files
+The content of the original challenge, as posted to the EBCoP
+SharePoint site is [here](./challenge.md)
+
+Below, I will introduce four different ways to import the data files
 and concatenate them together. The four styles shown are:
 
 1. Copy/Paste
