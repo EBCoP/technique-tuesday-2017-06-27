@@ -13,13 +13,11 @@ Because a function is just a type of object, R lets you handle a
 function like you would any other object, including passing a function
 to another function as a parameter.
 
-BOOM! Did you heah just explode?
+BOOM! Did you head just explode?
 
 Because a functional is a function which accepts a function as an input
-parameter.
-
-I know, many of you are probably about to stop reading. So, please, hold
-on. The example does make sense.
+parameter. I know, many of you are probably about to stop reading. So, 
+please, hold on. The example does make sense.
 
 In the previous examples, we used the function `dir` to find all of the
 CSV files in the `data/` folder. To do that, we had to pass `dir`
@@ -56,11 +54,9 @@ single step `foo_data <- data.frame(lapply(X=csv_files, FUN=read_csv))`.
 
 The functional `lapply` returns a list. That list has 20 elements in it,
 because csv\_files has 20 entries. Each element in the list is a data
-frame composed of the data from a single file. The function `data.frame`
-converts the list to a data frame.
-
-The end result is a single data frame, with all of the data from our 20
-files.
+frame composed of the data from a single file. The function `bind_rows`
+from dplyr converts the list to a data frame. The end result is a single
+data frame, with all of the data from our 20 files.
 
 Take a look at this code and think about it. This is a high-level idea
 and is something even some experienced programmers struggle with. But,
