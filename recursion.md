@@ -13,7 +13,7 @@ loop.
 
     ## Init ------------------------------------------------------------------------
     library(readr)   ## Replaces read.csv with read_csv (faster).
-    ## It is best practive to delete an abject before trying to aned to it.
+    ## It is best practice to delete an object before trying to apend to it.
     if (exists("foo_data")) rm(foo_data)
 
     ## Vector of CSV files from data/ ----------------------------------------------
@@ -51,7 +51,7 @@ loop.
     } ## End concatenate()
 
     ## Uses the function -----------------------------------------
-    ## This function iterates of each file in each son drenched beauty.
+    ## This function iterates of each file in csv_files and returns a single data frame.
     foo_data <- concatenate(csv_files, 1)
 
 This is a good technique to master. Although this example is a little
